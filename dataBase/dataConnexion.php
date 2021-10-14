@@ -12,7 +12,7 @@ try {
     $bddConn = new PDO("mysql:host=$dbBooks;dbname=$dbName", $dbUsername, $dbPassword);
     // If error generate exception
     $bddConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (Exception $e) {
+} catch (PDOException $e) {
     // Get the idea of error
     echo $e->getCode();
     // Display entire error msg

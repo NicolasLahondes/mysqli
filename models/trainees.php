@@ -1,16 +1,17 @@
 <?php
 
-class Subjects
+class Trainees
 {
 
-
+    private $id;
     private $name;
     private $time;
     private $note;
     const COEF = 2;
 
-    public function __construct($name, $time, $note)
+    public function __construct($id = '', $name = '', $time = '', $note = '')
     {
+        $this->id = $id;
         $this->name = $name;
         $this->time = $time;
         $this->note = $note;
@@ -76,9 +77,56 @@ class Subjects
         return $this;
     }
 
+    /**
+     * Get the value of id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function calc($note)
     {
         $temp = $note * self::COEF;
         return $temp;
+    }
+
+
+    public function listAllTrainees($bddConn)
+    {
+        $query = 'SELECT * FROM student';
+        $results = $bddConn->query($query);
+        $fetchedResults = $results->fetchAll();
+
+        return $fetchedResults;
+    }
+
+
+    /**
+     * takeOneElement
+     *
+     * @param  mixed $bddConn
+     * @return void
+     */
+    public function takeOneElement($bddConn, $id)
+    {
+
+        $query = 'SELECT * FROM student WHERE id LIKE "' . $id . '"';
+        $results = $bddConn->query($query);
+        $fetchedResults = $results->fetch(PDO::FETCH_ASSOC);
+
+        return $fetchedResults;
     }
 }

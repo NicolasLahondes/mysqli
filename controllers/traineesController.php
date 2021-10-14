@@ -2,12 +2,14 @@
 
 include 'models/trainees.php';
 
+// set the $results variable with query results from bdd
+
+$trainees = new Trainees();
+
+$aTrainees = $trainees->listAllTrainees($bddConn);
 
 
-$results = $bddConn->query("SELECT * from student");
-
-$fetchedResults = $results->fetchAll();
-
-var_dump($fetchedResults);
+// $trainee = $trainees->takeOneElement($bddConn, );
 
 include 'views/traineesView.php';
+
