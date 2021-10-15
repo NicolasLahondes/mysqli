@@ -28,6 +28,11 @@ if (!empty($_GET['action'])) {
             include "controllers/traineesController.php";
             break;
 
+        case "elevesModify":
+            include "controllers/traineeModify.php";
+            include "controllers/traineesController.php";
+            break;
+
         case "elevesOne":
             include "controllers/traineesOneController.php";
             break;

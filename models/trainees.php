@@ -129,4 +129,22 @@ class Trainees
 
         return $fetchedResults;
     }
+    
+    /**
+     * modify
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $nameEnt
+     * @param  mixed $firstNameEnt
+     * @param  mixed $birthdate
+     * @param  mixed $idToModify
+     * @return void
+     */
+    public function modify($bddConn, $nameEnt, $firstNameEnt, $birthdate, $idToModify)
+    {
+        $idQuery = 'UPDATE student SET name = "' . $nameEnt . '", firstname = "' . $firstNameEnt . '", birthdate = "' . $birthdate . '" WHERE id LIKE "' . $idToModify . '"';
+        $results = $bddConn->query($idQuery);
+
+        return $results;
+    }
 }
