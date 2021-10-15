@@ -107,7 +107,8 @@ class Trainees
     public function listAllTrainees($bddConn)
     {
         $query = 'SELECT * FROM student';
-        $results = $bddConn->query($query);
+        $results = $bddConn->prepare($query);
+        $results->execute();
         $fetchedResults = $results->fetchAll();
 
         return $fetchedResults;
@@ -123,13 +124,15 @@ class Trainees
     public function takeOneElement($bddConn, $id)
     {
 
-        $query = 'SELECT * FROM student WHERE id LIKE "' . $id . '"';
-        $results = $bddConn->query($query);
-        $fetchedResults = $results->fetch(PDO::FETCH_ASSOC);
+        $query = 'SELECT * FROM student WHERE id = :id';
+        $objRes = $bddConn->prepare($query);
+        $objRes->bindParam(':id', $id);
+        $objRes->execute();
+        $fetchedResults = $objRes->fetch(PDO::FETCH_ASSOC);
 
         return $fetchedResults;
     }
-    
+
     /**
      * modify
      *
@@ -140,10 +143,15 @@ class Trainees
      * @param  mixed $idToModify
      * @return void
      */
-    public function modify($bddConn, $nameEnt, $firstNameEnt, $birthdate, $idToModify)
+    public function modify($bddConn, $nameEnt, $firstNameEnt, $birthDateEnt, $idToModify)
     {
-        $idQuery = 'UPDATE student SET name = "' . $nameEnt . '", firstname = "' . $firstNameEnt . '", birthdate = "' . $birthdate . '" WHERE id LIKE "' . $idToModify . '"';
-        $results = $bddConn->query($idQuery);
+        $idQuery = 'UPDATE student SET `name`= :nameEnt, firstname= :firstNameEnt, birthdate= :birthdate WHERE id = :idToModify';
+        $results = $bddConn->prepare($idQuery);
+        $results->bindParam(':nameEnt', $nameEnt);
+        $results->bindParam(':firstNameEnt', $firstNameEnt);
+        $results->bindParam(':birthdate', $birthDateEnt);
+        $results->bindParam(':idToModify', $idToModify);
+        $results->execute();
 
         return $results;
     }
