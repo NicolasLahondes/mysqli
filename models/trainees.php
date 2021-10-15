@@ -5,16 +5,15 @@ class Trainees
 
     private $id;
     private $name;
-    private $time;
-    private $note;
-    const COEF = 2;
+    private $firstname;
+    private $birthdate;
 
-    public function __construct($id = '', $name = '', $time = '', $note = '')
+    public function __construct($id = '', $name = '', $firstname = '', $birthdate = '')
     {
         $this->id = $id;
         $this->name = $name;
-        $this->time = $time;
-        $this->note = $note;
+        $this->firstname = $firstname;
+        $this->birthdate = $birthdate;
     }
 
     /**
@@ -37,45 +36,6 @@ class Trainees
         return $this;
     }
 
-    /**
-     * Get the value of time
-     */
-    public function getTime()
-    {
-        return $this->time;
-    }
-
-    /**
-     * Set the value of time
-     *
-     * @return  self
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of note
-     */
-    public function getNote()
-    {
-        return $this->note;
-    }
-
-    /**
-     * Set the value of note
-     *
-     * @return  self
-     */
-    public function setNote($note)
-    {
-        $this->note = $note;
-
-        return $this;
-    }
 
     /**
      * Get the value of id
@@ -97,10 +57,44 @@ class Trainees
         return $this;
     }
 
-    public function calc($note)
+    /**
+     * Get the value of firstname
+     */
+    public function getFirstname()
     {
-        $temp = $note * self::COEF;
-        return $temp;
+        return $this->firstname;
+    }
+
+    /**
+     * Set the value of firstname
+     *
+     * @return  self
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of birthdate
+     */
+    public function getBirthdate()
+    {
+        return $this->birthdate;
+    }
+
+    /**
+     * Set the value of birthdate
+     *
+     * @return  self
+     */
+    public function setBirthdate($birthdate)
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
     }
 
 
@@ -113,7 +107,6 @@ class Trainees
 
         return $fetchedResults;
     }
-
 
     /**
      * takeOneElement
@@ -130,7 +123,10 @@ class Trainees
         $objRes->execute();
         $fetchedResults = $objRes->fetch(PDO::FETCH_ASSOC);
 
-        return $fetchedResults;
+        $this->id = $fetchedResults['id'];
+        $this->name = $fetchedResults['name'];
+        $this->firstname = $fetchedResults['firstname'];
+        $this->birthdate = $fetchedResults['birthdate'];
     }
 
     /**

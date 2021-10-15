@@ -17,4 +17,3 @@ if (!empty($_POST)) {
 // $trainee = $trainees->takeOneElement($bddConn, );
 
 include 'views/traineesView.php';
-

@@ -6,8 +6,9 @@
         <h3>Vous avez selectionné
             <?php
             if (!empty($_GET) && !empty($_GET['id'])) :
-                $trainee = $trainees->takeOneElement($bddConn, ($_GET['id']));
-                echo $trainee['firstname'] . " " . $trainee['name'];
+                $trainees = new Trainees();
+                $trainees->takeOneElement($bddConn, $_GET['id']);
+                echo $trainees->getFirstname();
             else : echo "Personne";
             endif;
             ?>
@@ -33,7 +34,7 @@
                         <td><?php echo $value['name'] ?></td>
                         <td><?php echo $value['firstname'] ?></td>
                         <td><?php echo $value['birthdate'] ?></td>
-                        <td><a href="index.php?action=elevesModify&id=<?php echo $value['id']?>&name=<?php echo $value['name']?>&firstname=<?php echo $value['firstname']?>&birthdate=<?php echo $value['birthdate'] ?>">Modifier</a></td>
+                        <td><a href="index.php?action=elevesModify&id=<?php echo $value['id'] ?>&name=<?php echo $value['name'] ?>&firstname=<?php echo $value['firstname'] ?>&birthdate=<?php echo $value['birthdate'] ?>">Modifier</a></td>
                         <td><a href="index.php?action=eleves&id=<?php echo $value['id'] ?>">Selectionner</a></td>
                         <td><a href="index.php?action=elevesOne&id=<?php echo $value['id'] ?>">Vers une autre page et au delà</a></td>
                     </tr>
