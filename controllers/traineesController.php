@@ -6,9 +6,11 @@ include 'models/trainees.php';
 
 $trainees = new Trainees();
 
-$aTrainees = $trainees->listAllTrainees($bddConn);
+// $aTrainees = $trainees->listAllTrainees($bddConn);
+$arrayTrainees = $trainees->listAllTrainees($bddConn);
 
-var_dump($_POST);
+
+// var_dump($_POST);
 
 if (!empty($_POST)) {
     $trainees->modify($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate'], $_POST['id']);

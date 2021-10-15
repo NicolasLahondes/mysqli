@@ -28,15 +28,15 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($aTrainees as $value) : ?>
+                <?php foreach ($arrayTrainees as $trainee) : ?>
                     <tr>
-                        <td><?php echo $value['id'] ?></td>
-                        <td><?php echo $value['name'] ?></td>
-                        <td><?php echo $value['firstname'] ?></td>
-                        <td><?php echo $value['birthdate'] ?></td>
-                        <td><a href="index.php?action=elevesModify&id=<?php echo $value['id'] ?>&name=<?php echo $value['name'] ?>&firstname=<?php echo $value['firstname'] ?>&birthdate=<?php echo $value['birthdate'] ?>">Modifier</a></td>
-                        <td><a href="index.php?action=eleves&id=<?php echo $value['id'] ?>">Selectionner</a></td>
-                        <td><a href="index.php?action=elevesOne&id=<?php echo $value['id'] ?>">Vers une autre page et au delà</a></td>
+                        <td><?php echo $trainee->getId(); ?></td>
+                        <td><?php echo $trainee->getName(); ?></td>
+                        <td><?php echo $trainee->getFirstname(); ?></td>
+                        <td><?php echo $trainee->getBirthdate(); ?></td>
+                        <td><a href="index.php?action=elevesModify&id=<?php echo $trainee->getId() ?>&name=<?php echo $trainee->getName() ?>&firstname=<?php echo  $trainee->getFirstname() ?>&birthdate=<?php echo $trainee->getBirthdate() ?>">Modifier</a></td>
+                        <td><a href="index.php?action=eleves&id=<?php echo $trainee->getId() ?>">Selectionner</a></td>
+                        <td><a href="index.php?action=elevesOne&id=<?php echo $trainee->getId() ?>">Vers une autre page et au delà</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

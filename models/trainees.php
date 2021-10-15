@@ -104,9 +104,20 @@ class Trainees
         $results = $bddConn->prepare($query);
         $results->execute();
         $fetchedResults = $results->fetchAll();
+        $arrayResult = array();
 
-        return $fetchedResults;
+        foreach ($fetchedResults as $trainee) {
+            array_push($arrayResult, new Trainees($trainee['id'], $trainee['name'], $trainee['firstname'], $trainee['birthdate']));
+
+        }
+        return $arrayResult;
     }
+
+
+    // $this->id = $key['id'];
+    // $this->name = $key['name'];
+    // $this->firstname = $key['firstname'];
+    // $this->birthdate = $key['birthdate'];
 
     /**
      * takeOneElement
