@@ -1,15 +1,14 @@
 <?php
 
 // Declaire trainee to use all methods.
-$trainees = new Trainees();
+
 
 // Declare instance for list all trainees
 $arrayTrainees = Trainees::listAllTrainees($bddConn);
 
 // Add a trainee
 if (!empty($_POST) && !empty($_POST['added'])) {
-
-    $trainees->addTrainee($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate']);
+    Connexion::addTrainee($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate']);
 }
 
 // Select one trainee
@@ -25,7 +24,7 @@ if (!empty($_POST) && !empty($_POST['name'])) {
 
 // Delete a trainee
 if (!empty($_GET) && !empty($_GET['delete'])) {
-    $trainees->deleteTrainee($bddConn, $_GET['id']);
+    Trainees::deleteTrainee($bddConn, $_GET['id']);
     header('Location:index.php?action=eleves');
 }
 

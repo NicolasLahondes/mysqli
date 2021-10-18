@@ -6,7 +6,7 @@
         <h3>Vous avez selectionné
             <?php
             if (!empty($_GET) && !empty($_GET['id'])) :
-                $trainees->takeOneElement($bddConn, $_GET['id']);
+                Trainees::takeOneElement($bddConn, $_GET['id']);
                 echo $trainees->getFirstname();
             else : echo "Personne";
             endif;

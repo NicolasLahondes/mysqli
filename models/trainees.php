@@ -151,7 +151,7 @@ class Trainees
     }
 
 
-    public function deleteTrainee($bddConn, $id)
+    public static function deleteTrainee($bddConn, $id)
     {
         $query = 'DELETE FROM `student` WHERE `student`.`id` = :id';
         $results = $bddConn->prepare($query);
@@ -162,7 +162,7 @@ class Trainees
     }
 
 
-    public function addTrainee($bddConn, $name, $firstname, $birthdate)
+    public static function addTrainee($bddConn, $name, $firstname, $birthdate)
     {
         $query = 'INSERT INTO student (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
         $results = $bddConn->prepare($query);

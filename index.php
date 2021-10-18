@@ -25,7 +25,7 @@ spl_autoload_register(function ($class_name) {
     require_once 'models/' . $class_name . '.php';
 });
 
-include 'dataBase/dataConnexion.php';
+$bddConn = new Connexion('localhost', 'mysqlphplink','root','nevolepasmesdonnéescindy');
 
 if (!empty($_GET['action'])) {
     switch ($_GET['action']) {
