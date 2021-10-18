@@ -8,12 +8,8 @@ class Trainees
     private $firstname;
     private $birthdate;
 
-    public function __construct($id = '', $name = '', $firstname = '', $birthdate = '')
+    public function __construct()
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->firstname = $firstname;
-        $this->birthdate = $birthdate;
     }
 
     /**
@@ -98,19 +94,13 @@ class Trainees
     }
 
 
-    public function listAllTrainees($bddConn)
+    public static function listAllTrainees($bddConn)
     {
         $query = 'SELECT * FROM student';
         $results = $bddConn->prepare($query);
         $results->execute();
-        $fetchedResults = $results->fetchAll();
-        $arrayResult = array();
-
-        foreach ($fetchedResults as $trainee) {
-            array_push($arrayResult, new Trainees($trainee['id'], $trainee['name'], $trainee['firstname'], $trainee['birthdate']));
-
-        }
-        return $arrayResult;
+        $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+        return $fetchedResults;
     }
 
 
@@ -125,19 +115,16 @@ class Trainees
      * @param  mixed $bddConn
      * @return void
      */
-    public function takeOneElement($bddConn, $id)
+    public static function takeOneElement($bddConn, $id)
     {
 
         $query = 'SELECT * FROM student WHERE id = :id';
         $objRes = $bddConn->prepare($query);
         $objRes->bindParam(':id', $id);
         $objRes->execute();
-        $fetchedResults = $objRes->fetch(PDO::FETCH_ASSOC);
-
-        $this->id = $fetchedResults['id'];
-        $this->name = $fetchedResults['name'];
-        $this->firstname = $fetchedResults['firstname'];
-        $this->birthdate = $fetchedResults['birthdate'];
+        //  Le constructeur doit être vide pour utiliser la method ci dessous.  
+        $fetchedResults = $objRes->fetchObject(__CLASS__);
+        return $fetchedResults;
     }
 
     /**
@@ -150,7 +137,7 @@ class Trainees
      * @param  mixed $idToModify
      * @return void
      */
-    public function modify($bddConn, $nameEnt, $firstNameEnt, $birthDateEnt, $idToModify)
+    public static function modify($bddConn, $nameEnt, $firstNameEnt, $birthDateEnt, $idToModify)
     {
         $idQuery = 'UPDATE student SET `name`= :nameEnt, firstname= :firstNameEnt, birthdate= :birthdate WHERE id = :idToModify';
         $results = $bddConn->prepare($idQuery);
@@ -161,5 +148,49 @@ class Trainees
         $results->execute();
 
         return $results;
+    }
+
+
+    public function deleteTrainee($bddConn, $id)
+    {
+        $query = 'DELETE FROM `student` WHERE `student`.`id` = :id';
+        $results = $bddConn->prepare($query);
+        $results->bindParam(':id', $id);
+        $results->execute();
+
+        return $results;
+    }
+
+
+    public function addTrainee($bddConn, $name, $firstname, $birthdate)
+    {
+        $query = 'INSERT INTO student (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
+        $results = $bddConn->prepare($query);
+        $results->bindParam(':name', $name);
+        $results->bindParam(':firstname', $firstname);
+        $results->bindParam(':birthdate', $birthdate);
+        $results->execute();
+
+        return $results;
+    }
+
+
+
+    public function calcAge()
+    {
+        $age = date("Y") - date("Y", strtotime($this->birthdate));
+        return $age;
+    }
+
+    public function seniorJunior($age)
+    {
+        if (($age > 30) && ($age < 60)) :
+            $type = "Senior";
+        elseif ($age > 200) :
+            $type = "Ultra-senior";
+        else :
+            $type = "Junior";
+        endif;
+        return $type;
     }
 }

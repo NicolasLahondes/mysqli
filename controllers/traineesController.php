@@ -1,21 +1,33 @@
 <?php
 
-include 'models/trainees.php';
-
-// set the $results variable with query results from bdd
-
+// Declaire trainee to use all methods.
 $trainees = new Trainees();
 
-// $aTrainees = $trainees->listAllTrainees($bddConn);
-$arrayTrainees = $trainees->listAllTrainees($bddConn);
+// Declare instance for list all trainees
+$arrayTrainees = Trainees::listAllTrainees($bddConn);
 
+// Add a trainee
+if (!empty($_POST) && !empty($_POST['added'])) {
 
-// var_dump($_POST);
+    $trainees->addTrainee($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate']);
+}
 
-if (!empty($_POST)) {
-    $trainees->modify($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate'], $_POST['id']);
+// Select one trainee
+if (!empty($_GET) && empty($_GET['delete']) && !empty($_GET['id'])) {
+    $trainees = Trainees::takeOneElement($bddConn, $_GET['id']);
+}
+
+// Modifying a trainee
+if (!empty($_POST) && !empty($_POST['name'])) {
+    Trainees::modify($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate'], $_POST['id']);
     header('Location:index.php?action=eleves');
 }
-// $trainee = $trainees->takeOneElement($bddConn, );
+
+// Delete a trainee
+if (!empty($_GET) && !empty($_GET['delete'])) {
+    $trainees->deleteTrainee($bddConn, $_GET['id']);
+    header('Location:index.php?action=eleves');
+}
+
 
 include 'views/traineesView.php';

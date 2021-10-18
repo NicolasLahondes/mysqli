@@ -11,13 +11,19 @@
 
 <body>
     <a href="index.php?action=eleves"><button>Elèves</button></a>
+    <a href="index.php?action=elevesAdd"><button>Ajouter un élève</button></a>
     <a href="index.php?action=teachers"><button>Professeurs</button></a>
     <a href="index.php?action=subjects"><button>Matières</button></a>
+
 </body>
 
 </html>
 
 <?php
+
+spl_autoload_register(function ($class_name) {
+    require_once 'models/' . $class_name . '.php';
+});
 
 include 'dataBase/dataConnexion.php';
 
@@ -30,7 +36,10 @@ if (!empty($_GET['action'])) {
 
         case "elevesModify":
             include "controllers/traineeModify.php";
-            include "controllers/traineesController.php";
+            break;
+
+        case "elevesAdd":
+            include "controllers/traineesAdd.php";
             break;
 
         case "elevesOne":
