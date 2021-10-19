@@ -1,6 +1,6 @@
 <?php
 
-class Connexion extends PDO 
+class Connexion extends PDO
 {
 
     private $dbAdress;
@@ -113,16 +113,46 @@ class Connexion extends PDO
     //     }
     // }
 
-
-            public static function addTrainee($bddConn, $name, $firstname, $birthdate)
+    public static function listAllTrainees($bddConn, $tableName, $limit = 0, $className, $where, $what, $order, $by)
     {
-        $query = 'INSERT INTO student (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
+        $query = 'SELECT * FROM ' . $tableName . '';
+        if ($where) :
+            $query = $query . ' WHERE ' . $where . ' LIKE ' . '' . '\'%' . $what . '%\'' . '';
+        endif;
+        if ($order == "firstname" || $order == "name" || $order == "birthdate" || $order == "id") :
+            $query = $query . ' ORDER BY ' .  $order  . ' ' . $by;
+        endif;
+        if ($limit > 0) :
+            $query =  $query . '  LIMIT ' . $limit . '';
+        endif;
+        echo $query;
         $results = $bddConn->prepare($query);
-        $results->bindParam(':name', $name);
-        $results->bindParam(':firstname', $firstname);
-        $results->bindParam(':birthdate', $birthdate);
         $results->execute();
+        $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, $className);
+        return $fetchedResults;
+    }
 
+
+    /**
+     * addTrainee
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $name
+     * @param  mixed $firstname
+     * @param  mixed $birthdate
+     * @param  mixed $tableName
+     * @return void
+     */
+    public static function addTrainee($bddConn, $tableName, $bindParam)
+    {
+
+        $query = 'INSERT INTO ' . $tableName . ' (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
+        $results = $bddConn->prepare($query);
+
+        foreach ($bindParam as $key => $value) :
+            $results->bindParam(':name', $name);
+        endforeach;
+        $results->execute();
         return $results;
     }
 }

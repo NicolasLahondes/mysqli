@@ -4,11 +4,11 @@
 
 
 // Declare instance for list all trainees
-$arrayTrainees = Trainees::listAllTrainees($bddConn);
+$arrayTrainees = Connexion::listAllTrainees($bddConn, "student", 15, 'Trainees', 'firstname', null, 'firstname','ASC');
 
 // Add a trainee
 if (!empty($_POST) && !empty($_POST['added'])) {
-    Connexion::addTrainee($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate']);
+    Connexion::addTrainee($bddConn, $_POST['name'], $_POST['firstname'], $_POST['birthdate'], "student");
 }
 
 // Select one trainee

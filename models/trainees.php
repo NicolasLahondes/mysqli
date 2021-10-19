@@ -94,14 +94,14 @@ class Trainees
     }
 
 
-    public static function listAllTrainees($bddConn)
-    {
-        $query = 'SELECT * FROM student';
-        $results = $bddConn->prepare($query);
-        $results->execute();
-        $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-        return $fetchedResults;
-    }
+    // public static function listAllTrainees($bddConn)
+    // {
+    //     $query = 'SELECT * FROM student';
+    //     $results = $bddConn->prepare($query);
+    //     $results->execute();
+    //     $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    //     return $fetchedResults;
+    // }
 
 
     // $this->id = $key['id'];
@@ -162,17 +162,17 @@ class Trainees
     }
 
 
-    public static function addTrainee($bddConn, $name, $firstname, $birthdate)
-    {
-        $query = 'INSERT INTO student (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
-        $results = $bddConn->prepare($query);
-        $results->bindParam(':name', $name);
-        $results->bindParam(':firstname', $firstname);
-        $results->bindParam(':birthdate', $birthdate);
-        $results->execute();
+    // public static function addTrainee($bddConn, $name, $firstname, $birthdate)
+    // {
+    //     $query = 'INSERT INTO student (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
+    //     $results = $bddConn->prepare($query);
+    //     $results->bindParam(':name', $name);
+    //     $results->bindParam(':firstname', $firstname);
+    //     $results->bindParam(':birthdate', $birthdate);
+    //     $results->execute();
 
-        return $results;
-    }
+    //     return $results;
+    // }
 
 
 
