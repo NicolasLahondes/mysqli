@@ -113,19 +113,32 @@ class Connexion extends PDO
     //     }
     // }
 
+    /**
+     * listAllTrainees
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $tableName
+     * @param  mixed $limit
+     * @param  mixed $className
+     * @param  mixed $where
+     * @param  mixed $what
+     * @param  mixed $order
+     * @param  mixed $by
+     * @return $fetchedresults
+     */
     public static function listAllTrainees($bddConn, $tableName, $limit = 0, $className, $where, $what, $order, $by)
     {
         $query = 'SELECT * FROM ' . $tableName . '';
         if ($where) :
             $query = $query . ' WHERE ' . $where . ' LIKE ' . '' . '\'%' . $what . '%\'' . '';
         endif;
-        if ($order == "firstname" || $order == "name" || $order == "birthdate" || $order == "id") :
+        if ($order) :
             $query = $query . ' ORDER BY ' .  $order  . ' ' . $by;
         endif;
         if ($limit > 0) :
             $query =  $query . '  LIMIT ' . $limit . '';
         endif;
-        echo $query;
+        echo strtoupper("query actuelle: ") . $query;
         $results = $bddConn->prepare($query);
         $results->execute();
         $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, $className);
@@ -145,14 +158,52 @@ class Connexion extends PDO
      */
     public static function addTrainee($bddConn, $tableName, $bindParam)
     {
-
         $query = 'INSERT INTO ' . $tableName . ' (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
-        $results = $bddConn->prepare($query);
 
+        $results = $bddConn->prepare($query);
         foreach ($bindParam as $key => $value) :
-            $results->bindParam(':name', $name);
+            echo $value;
+            $results->bindValue(':' . $key, $value);
         endforeach;
         $results->execute();
+        return $results;
+    }
+
+    
+    /**
+     * modify
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $bindParam
+     * @return void
+     */
+    public static function modify($bddConn, $bindParam)
+    {
+        $idQuery = 'UPDATE student SET `name`= :nameEnt, firstname= :firstNameEnt, birthdate= :birthdate WHERE id = :id';
+        $results = $bddConn->prepare($idQuery);
+        foreach ($bindParam as $key => $value) :
+            $results->bindValue(':' . $key, $value);
+        endforeach;
+        $results->execute();
+        return;
+    }
+
+    
+    /**
+     * deleteTrainee
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $id
+     * @param  mixed $tableName
+     * @return void
+     */
+    public static function deleteTrainee($bddConn, $id, $tableName)
+    {
+        $query = 'DELETE FROM ' . $tableName . ' WHERE `' . $tableName . '`.`id` = :id';
+        $results = $bddConn->prepare($query);
+        $results->bindParam(':id', $id);
+        $results->execute();
+
         return $results;
     }
 }

@@ -36,7 +36,7 @@
                         <td><?php echo $trainee->getName(); ?></td>
                         <td><?php echo $trainee->getFirstname(); ?></td>
                         <td><?php echo $trainee->getBirthdate(); ?></td>
-                        <td><a href="index.php?action=elevesModify&id=<?php echo $trainee->getId() ?>&name=<?php echo $trainee->getName() ?>&firstname=<?php echo  $trainee->getFirstname() ?>&birthdate=<?php echo $trainee->getBirthdate() ?>">Modifier</a></td>
+                        <td><a href="index.php?action=elevesModify&modified=true&id=<?php echo $trainee->getId() ?>&name=<?php echo $trainee->getName() ?>&firstname=<?php echo  $trainee->getFirstname() ?>&birthdate=<?php echo $trainee->getBirthdate() ?>">Modifier</a></td>
                         <td><a href="index.php?action=eleves&delete=1&id=<?php echo $trainee->getId() ?>">Supprimer</a></td>
                         <td><a href="index.php?action=eleves&id=<?php echo $trainee->getId() ?>">Selectionner</a></td>
                         <td><a href="index.php?action=elevesOne&id=<?php echo $trainee->getId() ?>">Vers une autre page et au delà</a></td>

@@ -127,39 +127,39 @@ class Trainees
         return $fetchedResults;
     }
 
-    /**
-     * modify
-     *
-     * @param  mixed $bddConn
-     * @param  mixed $nameEnt
-     * @param  mixed $firstNameEnt
-     * @param  mixed $birthdate
-     * @param  mixed $idToModify
-     * @return void
-     */
-    public static function modify($bddConn, $nameEnt, $firstNameEnt, $birthDateEnt, $idToModify)
-    {
-        $idQuery = 'UPDATE student SET `name`= :nameEnt, firstname= :firstNameEnt, birthdate= :birthdate WHERE id = :idToModify';
-        $results = $bddConn->prepare($idQuery);
-        $results->bindParam(':nameEnt', $nameEnt);
-        $results->bindParam(':firstNameEnt', $firstNameEnt);
-        $results->bindParam(':birthdate', $birthDateEnt);
-        $results->bindParam(':idToModify', $idToModify);
-        $results->execute();
+    // /**
+    //  * modify
+    //  *
+    //  * @param  mixed $bddConn
+    //  * @param  mixed $nameEnt
+    //  * @param  mixed $firstNameEnt
+    //  * @param  mixed $birthdate
+    //  * @param  mixed $idToModify
+    //  * @return void
+    //  */
+    // public static function modify($bddConn, $nameEnt, $firstNameEnt, $birthDateEnt, $idToModify)
+    // {
+    //     $idQuery = 'UPDATE student SET `name`= :nameEnt, firstname= :firstNameEnt, birthdate= :birthdate WHERE id = :idToModify';
+    //     $results = $bddConn->prepare($idQuery);
+    //     $results->bindParam(':nameEnt', $nameEnt);
+    //     $results->bindParam(':firstNameEnt', $firstNameEnt);
+    //     $results->bindParam(':birthdate', $birthDateEnt);
+    //     $results->bindParam(':idToModify', $idToModify);
+    //     $results->execute();
 
-        return $results;
-    }
+    //     return $results;
+    // }
 
 
-    public static function deleteTrainee($bddConn, $id)
-    {
-        $query = 'DELETE FROM `student` WHERE `student`.`id` = :id';
-        $results = $bddConn->prepare($query);
-        $results->bindParam(':id', $id);
-        $results->execute();
+    // public static function deleteTrainee($bddConn, $id)
+    // {
+    //     $query = 'DELETE FROM `student` WHERE `student`.`id` = :id';
+    //     $results = $bddConn->prepare($query);
+    //     $results->bindParam(':id', $id);
+    //     $results->execute();
 
-        return $results;
-    }
+    //     return $results;
+    // }
 
 
     // public static function addTrainee($bddConn, $name, $firstname, $birthdate)
