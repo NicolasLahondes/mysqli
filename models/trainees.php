@@ -1,6 +1,6 @@
 <?php
 
-class Trainees
+class Trainees extends Connexion
 {
 
     private $id;
@@ -93,95 +93,100 @@ class Trainees
         return $this;
     }
 
-
-    // public static function listAllTrainees($bddConn)
-    // {
-    //     $query = 'SELECT * FROM student';
-    //     $results = $bddConn->prepare($query);
-    //     $results->execute();
-    //     $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-    //     return $fetchedResults;
-    // }
-
-
-    // $this->id = $key['id'];
-    // $this->name = $key['name'];
-    // $this->firstname = $key['firstname'];
-    // $this->birthdate = $key['birthdate'];
+    // **********************************************************************************************************************************************
+    // ************************************************************** ALL METHODS HERE **************************************************************
+    // **********************************************************************************************************************************************
 
     /**
-     * takeOneElement
+     * listAllTrainees
      *
      * @param  mixed $bddConn
+     * @param  mixed $tableName
+     * @param  mixed $limit
+     * @param  mixed $className
+     * @param  mixed $where
+     * @param  mixed $what
+     * @param  mixed $order
+     * @param  mixed $by
      * @return void
      */
-    public static function takeOneElement($bddConn, $id)
+    public static function listAllTrainees($bddConn, $tableName, $limit, $className, $where, $what, $order, $by)
     {
-
-        $query = 'SELECT * FROM student WHERE id = :id';
-        $objRes = $bddConn->prepare($query);
-        $objRes->bindParam(':id', $id);
-        $objRes->execute();
-        //  Le constructeur doit être vide pour utiliser la method ci dessous.  
-        $fetchedResults = $objRes->fetchObject(__CLASS__);
+        $fetchedResults = $bddConn->list($bddConn, $tableName, $limit, $className, $where, $what, $order, $by);
         return $fetchedResults;
     }
 
-    // /**
-    //  * modify
-    //  *
-    //  * @param  mixed $bddConn
-    //  * @param  mixed $nameEnt
-    //  * @param  mixed $firstNameEnt
-    //  * @param  mixed $birthdate
-    //  * @param  mixed $idToModify
-    //  * @return void
-    //  */
-    // public static function modify($bddConn, $nameEnt, $firstNameEnt, $birthDateEnt, $idToModify)
-    // {
-    //     $idQuery = 'UPDATE student SET `name`= :nameEnt, firstname= :firstNameEnt, birthdate= :birthdate WHERE id = :idToModify';
-    //     $results = $bddConn->prepare($idQuery);
-    //     $results->bindParam(':nameEnt', $nameEnt);
-    //     $results->bindParam(':firstNameEnt', $firstNameEnt);
-    //     $results->bindParam(':birthdate', $birthDateEnt);
-    //     $results->bindParam(':idToModify', $idToModify);
-    //     $results->execute();
+    /**
+     * takeOneTrainee
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $id
+     * @return void
+     */
+    public static function takeOneTrainee($bddConn, $id)
+    {
+        $fetchedResults = $bddConn->takeOneElement($bddConn, $_GET['id']);
+        return $fetchedResults;
+    }
 
-    //     return $results;
-    // }
+    /**
+     * modifyTrainee
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $bindParam
+     * @return void
+     */
+    public static function modifyTrainee($bddConn, $bindParam)
+    {
+        $results = $bddConn->modify($bddConn, $bindParam);
+        return $results;
+    }
 
+    /**
+     * deleteTrainee
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $id
+     * @param  mixed $tableName
+     * @return void
+     */
+    public static function deleteTrainee($bddConn, $id, $tableName)
+    {
+        $results = $bddConn->delete($bddConn, $id, $tableName);
+        return $results;
+    }
 
-    // public static function deleteTrainee($bddConn, $id)
-    // {
-    //     $query = 'DELETE FROM `student` WHERE `student`.`id` = :id';
-    //     $results = $bddConn->prepare($query);
-    //     $results->bindParam(':id', $id);
-    //     $results->execute();
+    /**
+     * addTrainee
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $tableName
+     * @param  mixed $bindParam
+     * @return void
+     */
+    public static function addTrainee($bddConn, $tableName, $bindParam)
+    {
+        $results = $bddConn->add($bddConn, $tableName, $bindParam);
+        return $results;
+    }
 
-    //     return $results;
-    // }
-
-
-    // public static function addTrainee($bddConn, $name, $firstname, $birthdate)
-    // {
-    //     $query = 'INSERT INTO student (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
-    //     $results = $bddConn->prepare($query);
-    //     $results->bindParam(':name', $name);
-    //     $results->bindParam(':firstname', $firstname);
-    //     $results->bindParam(':birthdate', $birthdate);
-    //     $results->execute();
-
-    //     return $results;
-    // }
-
-
-
+    /**
+     * calcAge
+     *
+     * @return void
+     */
     public function calcAge()
     {
         $age = date("Y") - date("Y", strtotime($this->birthdate));
         return $age;
     }
 
+    /**
+     * seniorJunior
+     *
+     * @param  mixed $age
+     * @return void
+     */
     public function seniorJunior($age)
     {
         if (($age > 30) && ($age < 60)) :

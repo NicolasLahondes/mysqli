@@ -1,32 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
 <body>
     <div class="container">
         <table class="table">
             <thead>
                 <tr>
+                    <th scope="col">Id</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
-                    <th scope="col">Date de naissance</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if ($resultsCheck > 0) :
-                    foreach ($results as $row) : ?>
+                if ($arrayTeacher > 0) :
+                    foreach ($arrayTeacher as $row => $value) : ?>
                         <tr>
-                            <td><?php echo $row['name'] ?></td>
-                            <td><?php echo $row['firstname'] ?></td>
-                            <td><?php echo $row['id'] ?></td>
+                            <td><?php echo $value->getId(); ?></td>
+                            <td><?php echo $value->getName(); ?></td>
+                            <td><?php echo $value->getFirstname(); ?></td>
                         </tr>
                 <?php endforeach;
                 endif; ?>
@@ -34,5 +23,4 @@
         </table>
     </div>
 </body>
-
 </html>

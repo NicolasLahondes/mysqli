@@ -97,24 +97,12 @@ class Connexion extends PDO
         return $this;
     }
 
-
-    // public function dbConnect()
-    // {
-    //     try {
-    //         //Setting bdd connexion
-    //         $bddConn = new PDO('mysql:host=' . $this->dbAdress . ';dbname=' . $this->dbName, $this->dbUser, $this->dbPassword);
-    //         // If error generate exception
-    //         $bddConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    //     } catch (PDOException $e) {
-    //         // Get the idea of error
-    //         echo $e->getCode();
-    //         // Display entire error msg
-    //         die('Erreur :' . $e->getMessage());
-    //     }
-    // }
+    // **********************************************************************************************************************************************
+    // ************************************************************** ALL METHODS HERE **************************************************************
+    // **********************************************************************************************************************************************
 
     /**
-     * listAllTrainees
+     * list
      *
      * @param  mixed $bddConn
      * @param  mixed $tableName
@@ -124,42 +112,111 @@ class Connexion extends PDO
      * @param  mixed $what
      * @param  mixed $order
      * @param  mixed $by
-     * @return $fetchedresults
+     * @return void
      */
-    public static function listAllTrainees($bddConn, $tableName, $limit = 0, $className, $where, $what, $order, $by)
+    public static function list($bddConn, $tableName, $limit = 50, $className, $where, $what, $order, $by)
     {
-        $query = 'SELECT * FROM ' . $tableName . '';
-        if ($where) :
-            $query = $query . ' WHERE ' . $where . ' LIKE ' . '' . '\'%' . $what . '%\'' . '';
-        endif;
-        if ($order) :
-            $query = $query . ' ORDER BY ' .  $order  . ' ' . $by;
-        endif;
-        if ($limit > 0) :
-            $query =  $query . '  LIMIT ' . $limit . '';
-        endif;
-        echo strtoupper("query actuelle: ") . $query;
-        $results = $bddConn->prepare($query);
-        $results->execute();
-        $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, $className);
+
+        try {
+            $query = 'SELECT * FROM ' . $tableName . '';
+
+            if ($where) :
+                $query = $query . ' WHERE ' . $where . ' LIKE ' . '' . '\'%' . $what . '%\'' . '';
+            endif;
+            if ($order) :
+                $query = $query . ' ORDER BY ' .  $order  . ' ' . $by;
+            endif;
+            if ($limit > 0) :
+                $query =  $query . '  LIMIT ' . $limit . '';
+            endif;
+            echo strtoupper("query actuelle: ") . $query;
+            $results = $bddConn->prepare($query);
+            $results->execute();
+            $fetchedResults = $results->fetchAll(PDO::FETCH_CLASS, $className);
+            if (count($fetchedResults) < 1) :
+                throw new Exception("There is no results");
+            endif;
+            return $fetchedResults;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * takeOneElement
+     *
+     * @param  mixed $bddConn
+     * @param  mixed $id
+     * @return void
+     */
+    public static function takeOneElement($bddConn, $id)
+    {
+        $query = 'SELECT * FROM student WHERE id = :id';
+        $objRes = $bddConn->prepare($query);
+        $objRes->bindParam(':id', $id);
+        $objRes->execute();
+        // //  Le constructeur doit être vide pour utiliser la method ci dessous.
+        $objRes->setFetchMode(PDO::FETCH_CLASS, "Trainees");
+        $fetchedResults = $objRes->fetch();
         return $fetchedResults;
     }
 
 
     /**
-     * addTrainee
+     * add
      *
      * @param  mixed $bddConn
-     * @param  mixed $name
-     * @param  mixed $firstname
-     * @param  mixed $birthdate
      * @param  mixed $tableName
+     * @param  mixed $bindParam
      * @return void
      */
-    public static function addTrainee($bddConn, $tableName, $bindParam)
+    public static function add($bddConn, $tableName, $bindParam)
     {
-        $query = 'INSERT INTO ' . $tableName . ' (`name`, firstname, birthdate) VALUES (:name, :firstname, :birthdate)';
+        // Unnecessary part but keep it because it's nice.
+        // $arrayValuesFilled = array();
+        // $arrayValues = array_values($bindParam);
+        // foreach ($arrayValues as $key => $value) :
+        //     array_push($arrayValuesFilled, $arrayValues[$key]);
+        // endforeach;
 
+        // This part get the Keys from the $bindParam var
+        $arrayKeysFilled = array();
+        $arrayKeys = array_keys($bindParam);
+        foreach ($arrayKeys as $key => $value) :
+            array_push($arrayKeysFilled, $arrayKeys[$key]);
+        endforeach;
+
+        // This part generate the dynamic query
+        $inc = count($arrayKeys);
+        for ($i = 0; $i < $inc; $i++) {
+            if ($i == 0) :
+                $e = ' ( ';
+            endif;
+            if ($i < $inc - 1) :
+                $e = $e . $arrayKeysFilled[$i] . ', ';
+            elseif ($i == $inc - 1) :
+                $e = $e . $arrayKeysFilled[$i] . ' ) ';
+            endif;
+        }
+        for ($i = 0; $i < $inc; $i++) {
+            if ($i == 0) :
+                $e = $e . 'VALUES ( ';
+            endif;
+            if ($i < $inc - 1) :
+                $e = $e  . ":" . $arrayKeysFilled[$i] . ', ';
+            elseif ($i == $inc - 1) :
+                $e = $e  . ":" . $arrayKeysFilled[$i] . ' ) ';
+            endif;
+        }
+
+        // DEBUG CHECK IF BUG HERE
+        //       echo $e;
+        //       echo "<br>";
+
+        // EXECUTE THE QUERY
+
+        $query = 'INSERT INTO ' . $tableName . $e;
+        echo $query;
         $results = $bddConn->prepare($query);
         foreach ($bindParam as $key => $value) :
             echo $value;
@@ -169,7 +226,6 @@ class Connexion extends PDO
         return $results;
     }
 
-    
     /**
      * modify
      *
@@ -188,22 +244,20 @@ class Connexion extends PDO
         return;
     }
 
-    
     /**
-     * deleteTrainee
+     * delete
      *
      * @param  mixed $bddConn
      * @param  mixed $id
      * @param  mixed $tableName
      * @return void
      */
-    public static function deleteTrainee($bddConn, $id, $tableName)
+    public static function delete($bddConn, $id, $tableName)
     {
         $query = 'DELETE FROM ' . $tableName . ' WHERE `' . $tableName . '`.`id` = :id';
         $results = $bddConn->prepare($query);
         $results->bindParam(':id', $id);
         $results->execute();
-
         return $results;
     }
 }
